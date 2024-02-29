@@ -1,8 +1,10 @@
+
 import pandas as pd
 import plotly.express  as plexp
 import plotly.graph_objects as go
 
-df = pd.read_csv('/home/iiitdmk-sic05/Downloads/Sample - Superstore.csv',encoding='windows-1254')
+df = pd.read_csv('/Sample - Superstore.csv',encoding = 'latin-1')
+
 print(df.head(10))
 df['Order Date'] = pd.to_datetime(df['Order Date'])
 
@@ -29,3 +31,46 @@ fig_2= plexp.pie(sub_categ,
                  )
 fig_2.update_layout(title='label+percent+value')
 fig_2.show()
+
+new_categ = df.groupby('Sub-Category')['Sales'].sum().reset_index()
+
+fig_3 = plexp.bar(new_categ,
+                  x='Sub-Category',  # Use 'Sub-Category' for x-axis
+                  y='Sales',
+                  title='Sales Distribution by Sub-Category',
+                  )
+fig_3.show()
+
+a = df.groupby('Order Month')['Profit'].sum().reset_index()
+fig_4 = plexp.line(a,
+                   x='Order Month',
+                   y='Profit',
+                   title='Profit by Month',
+                   )
+fig_4.show()
+
+b = df.groupby('Category')['Profit'].sum().reset_index()
+
+fig_5 = plexp.pie(b,
+                  values = 'Profit',
+                  names = 'Category',
+                  hole=0.7
+                  )
+fig_5.show()
+
+c = df.groupby('Sub-Category')['Profit'].sum().reset_index()
+Fig_6 = plexp.bar(c,
+                  x='Sub-Category',  # Use 'Sub-Category' for x-axis
+                  y='Profit',
+                  title='Profit by Sub-Category',
+                  )
+Fig_6.show()
+
+
+d = df.groupby('Segment')['Sales', 'Profit'].sum().reset_index()
+fig_7 = plexp.bar(d,
+                  x='Segment',  # x-axis will represent the segments
+                  y=['Sales', 'Profit'],  # Sales and Profit will be displayed on the y-axis
+                  title='Profit and Sales by Segment'  # Title for the chart
+                  )
+fig_7.show()
